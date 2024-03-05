@@ -44,9 +44,99 @@ table {
 /*css reset*/
   
 /*global*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 :root {
 	--system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	font-family: var(--system-ui);
 	box-sizing: border-box;
+	--primary-color: #431407;
+	--secondary-color: #fed7aa;
+	--tertiary-color: hsl(28, 7%, 55%);
+}
+body {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	grid-template-rows: 1fr 10fr;
+}
+button{
+    cursor: pointer;
+}
+button:hover{
+	filter: brightness(1.2);
+}
+button:active{
+	filter: brightness(1.4);
 }
 /*global*/
+
+/*header*/
+header{
+    padding: 10px 40px;
+    font-size: 3rem;
+    background-color: var(--secondary-color);
+    font-family: poppins, sans-serif;
+    color: var(--primary-color);
+	grid-column: 1 / span 4;
+}
+/*header*/
+/*main*/
+main{
+	position: relative;
+}
+/*main*/
+
+/*aside*/
+aside{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 10px;
+    background-color: var(--tertiary-color);
+}
+
+aside button{
+	filter: brightness(1.1);
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: normal;
+    width: 100%;
+    border-radius: 10px;
+    background-color: var(--tertiary-color);
+	color: white;
+}
+
+aside h2{
+    font-size: 1.8rem;
+	font-family: poppins;
+	color: white;
+}
+/*aside*/
+
+/*footer*/
+footer{
+	padding: 20px 0;
+	font-size: clamp(1rem, 0.8500rem + 0.6667vw, 1.2rem);
+	position: absolute;
+	bottom: 0;
+	color: var(--tertiary-color);
+	line-height: 25px;
+	width: 100%;
+}
+footer a{
+	margin-left: 4px;
+    color: inherit;
+}
+footer p{
+	text-align: center;
+}
+.fa-github{
+	scale: 1.2;
+    transition: transform 0.3s ease-in-out;
+}
+.fa-github:hover{
+    transform: rotate(360deg) scale(1.2);
+}
+/*footer*/

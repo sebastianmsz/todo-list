@@ -1,47 +1,128 @@
+import { createProject, projectsList, getProjectByName} from './project';
+
 export default function(){
-    const body = document.querySelector('body');
+    function header(){
+        const header = document.querySelector('header');
+        const h1 = document.createElement('h1');
+        h1.textContent = 'To-Do List';
+        header.append(h1);
+    }
+    function aside(){
+        const aside = document.querySelector('aside')
+        const homeBtn = document.createElement('button');
+        const todayBtn = document.createElement('button');
+        const thisWeekBtn = document.createElement('button');
 
-    const header = document.createElement('header');
-    const h1 = document.createElement('h1');
-    h1.textContent = 'To-Do List';
-    header.append(h1);
-    
-    const aside = document.createElement('aside');
-    const homeBtn = document.createElement('button');
-    const todayBtn = document.createElement('button');
-    const thisWeekBtn = document.createElement('button');
-    const projectsH2 = document.createElement('h2');
-    const addTaskBtn = document.createElement('button');
-    homeBtn.textContent = 'Home';
-    todayBtn.textContent = 'Today';
-    thisWeekBtn.textContent = 'This Week';
-    projectsH2.textContent = 'Projects';
-    addTaskBtn.textContent = 'Add task';
-    aside.append(homeBtn, todayBtn, thisWeekBtn, projectsH2, addTaskBtn);
+        homeBtn.textContent = 'Home';
+        todayBtn.textContent = 'Today';
+        thisWeekBtn.textContent = 'This Week';
+        
+        aside.append(homeBtn, todayBtn, thisWeekBtn);
+        
+        const projectsH2 = document.createElement('h2');
+        const asideUl = document.createElement('ul')
 
-    const main = document.createElement('main');
-    const footer = document.createElement('footer');
-    const copyrightParagraph = document.createElement('p');
-    copyrightParagraph.textContent = 'Copyright ';
-    const copyrightSpan = document.createElement('span');
-    copyrightSpan.classList.add('copy');
-    copyrightSpan.innerHTML = '&copy;';
-    copyrightParagraph.appendChild(copyrightSpan);
-    const currentYearSpan = document.createElement('span');
-    currentYearSpan.id = 'year';
-    currentYearSpan.textContent = new Date().getFullYear();
-    copyrightParagraph.appendChild(currentYearSpan);
-    copyrightParagraph.textContent += ' sebastianmsz ';
-    const githubLink = document.createElement('a');
-    githubLink.href = 'https://github.com/sebastianmsz';
-    githubLink.target = '_blank';
-    const githubIcon = document.createElement('i');
-    githubIcon.classList.add('fa', 'fa-github');
-    githubIcon.setAttribute('aria-hidden', 'true');
-    githubLink.appendChild(githubIcon);
-    copyrightParagraph.appendChild(githubLink);
-    footer.appendChild(copyrightParagraph);
-    main.appendChild(footer);
+        projectsH2.textContent = 'Projects';
 
-    body.append(header,aside,main)
+        asideUl.appendChild(addProjectBtn())
+        aside.append(projectsH2, asideUl);
+    }
+    function content(){
+        const content = document.querySelector('#content');
+        const footer = document.querySelector('footer');
+        const copyrightParagraph = document.createElement('p');
+        copyrightParagraph.innerHTML = `Copyright &copy;<span id="year">${new Date().getFullYear()}</span> sebastianmsz`;
+        const githubLink = document.createElement('a');
+        githubLink.href = 'https://github.com/sebastianmsz';
+        githubLink.target = '_blank';
+        githubLink.innerHTML = '<i class="fa fa-github" aria-hidden="true"></i>';
+        copyrightParagraph.appendChild(githubLink);
+        footer.appendChild(copyrightParagraph);
+        content.appendChild(footer);
+    }
+
+
+    function addProjectBtn(){
+        const addProjectBtn = document.createElement('button');
+        addProjectBtn.textContent = 'Add Project';
+        addProjectBtn.id = 'addProjectBtn';
+        addProjectBtn.addEventListener('click', addProjectBtnHandler)
+
+        function addProjectBtnHandler(){
+            const asideUl = document.querySelector('aside>ul');
+            this.remove();
+            asideUl.appendChild(addProjectForm())
+        }
+        return addProjectBtn;
+    }
+    function addProjectForm(){
+        const asideUl = document.querySelector('aside>ul');
+        const addProjectForm = document.createElement('div');
+        const input = document.createElement('input');
+        const buttons = document.createElement('div');
+        const confirmBtn = document.createElement('button');
+        const cancelBtn = document.createElement('button');
+
+        addProjectForm.className = 'add-project-form';
+        input.placeholder = 'Project Name'
+        confirmBtn.textContent = 'Confirm';
+        cancelBtn.textContent = 'Cancel';
+
+        buttons.append(cancelBtn, confirmBtn)
+        addProjectForm.append(input, buttons)
+
+        confirmBtn.addEventListener('click', confirmBtnHandler);
+        cancelBtn.addEventListener('click', cancelBtnHandler);
+        function confirmBtnHandler(){
+            createProject(input.value);
+            updateProjectsListUi();
+            console.log(projectsList);
+        }
+        function cancelBtnHandler(){
+            addProjectForm.remove();
+            asideUl.appendChild(addProjectBtn());
+        }
+        
+        return addProjectForm;
+    }
+    function projectBtnTemplate(name){
+        const projectBtn = document.createElement('button');
+        const project = getProjectByName(name);
+        const contentUl = document.querySelector('#content>ul')
+        projectBtn.textContent = project.name;
+        projectBtn.addEventListener('click', projectBtnHandler);
+        function projectBtnHandler(){
+            contentUl.textContent = '';
+            project.tasks.forEach(task => {
+                contentUl.appendChild(taskElementTemplate(task.name))
+            });
+            contentUl.appendChild(addTaskBtn())
+        }
+        function addTaskBtn(){
+            const addTaskBtn = document.createElement('button');
+            addTaskBtn.textContent = 'Add Task';
+            addTaskBtn.addEventListener('click',addTaskBtnHandler);
+            function addTaskBtnHandler(){
+            }
+            return addTaskBtn;
+        }
+        function taskElementTemplate(taskName){
+            const taskButton = document.createElement('div');
+            taskButton.textContent = taskName;
+            return taskButton;
+        }
+        return projectBtn;
+    }
+
+    function updateProjectsListUi(){
+        const asideUl = document.querySelector('aside>ul');
+        asideUl.textContent = '';
+        projectsList.forEach(project => {
+            asideUl.appendChild(projectBtnTemplate(project.name))
+        });
+        asideUl.appendChild(addProjectBtn());
+    }
+    header();
+    aside();
+    content();
 }

@@ -1,4 +1,4 @@
-import { createProject, projectsList, getProjectByName} from './project';
+import {createProject, projectsList, getProjectByName} from './project';
 
 export default function(){
     function header(){
@@ -41,18 +41,18 @@ export default function(){
         content.appendChild(footer);
     }
 
-
     function addProjectBtn(){
         const addProjectBtn = document.createElement('button');
         addProjectBtn.textContent = 'Add Project';
         addProjectBtn.id = 'addProjectBtn';
         addProjectBtn.addEventListener('click', addProjectBtnHandler)
-
+        
         function addProjectBtnHandler(){
             const asideUl = document.querySelector('aside>ul');
             this.remove();
             asideUl.appendChild(addProjectForm())
         }
+
         return addProjectBtn;
     }
     function addProjectForm(){
@@ -60,35 +60,42 @@ export default function(){
         const addProjectForm = document.createElement('div');
         const input = document.createElement('input');
         const buttons = document.createElement('div');
-        const confirmBtn = document.createElement('button');
-        const cancelBtn = document.createElement('button');
-
+        
         addProjectForm.className = 'add-project-form';
         input.placeholder = 'Project Name'
-        confirmBtn.textContent = 'Confirm';
-        cancelBtn.textContent = 'Cancel';
+        
+        function cancelBtn(){
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.addEventListener('click', cancelBtnHandler);
+            function cancelBtnHandler(){
+                addProjectForm.remove();
+                asideUl.appendChild(addProjectBtn());
+            }
+            return cancelBtn;
+        }
 
-        buttons.append(cancelBtn, confirmBtn)
+        function confirmBtn (){
+            const confirmBtn = document.createElement('button');
+            confirmBtn.textContent = 'Confirm';
+            confirmBtn.addEventListener('click', confirmBtnHandler);
+            function confirmBtnHandler(){
+                createProject(input.value);
+                updateListUi(projectsList, asideUl, projectBtnTemplate, addProjectBtn);
+            }
+            return confirmBtn;
+        }
+
+        buttons.append(cancelBtn(), confirmBtn())
         addProjectForm.append(input, buttons)
 
-        confirmBtn.addEventListener('click', confirmBtnHandler);
-        cancelBtn.addEventListener('click', cancelBtnHandler);
-        function confirmBtnHandler(){
-            createProject(input.value);
-            updateProjectsListUi();
-            console.log(projectsList);
-        }
-        function cancelBtnHandler(){
-            addProjectForm.remove();
-            asideUl.appendChild(addProjectBtn());
-        }
-        
         return addProjectForm;
     }
     function projectBtnTemplate(name){
         const projectBtn = document.createElement('button');
         const project = getProjectByName(name);
         const contentUl = document.querySelector('#content>ul')
+        const asideUl = document.querySelector('aside>ul')
         projectBtn.textContent = project.name;
         projectBtn.addEventListener('click', projectBtnHandler);
         function projectBtnHandler(){
@@ -96,32 +103,48 @@ export default function(){
             project.tasks.forEach(task => {
                 contentUl.appendChild(taskElementTemplate(task.name))
             });
-            contentUl.appendChild(addTaskBtn())
-        }
-        function addTaskBtn(){
-            const addTaskBtn = document.createElement('button');
-            addTaskBtn.textContent = 'Add Task';
-            addTaskBtn.addEventListener('click',addTaskBtnHandler);
-            function addTaskBtnHandler(){
+            contentUl.append(addTaskBtn(), deleteProjectBtn())
+            function deleteProjectBtn(){
+                const deleteProjectBtn = document.createElement('button');
+                deleteProjectBtn.textContent = 'Delete Project';
+                deleteProjectBtn.addEventListener('click',()=>{
+                    project.deleteProject();
+                    updateListUi(projectsList, asideUl, projectBtnTemplate, addProjectBtn);
+                    contentUl.textContent = '';
+                })
+                return deleteProjectBtn;
             }
-            return addTaskBtn;
-        }
-        function taskElementTemplate(taskName){
-            const taskButton = document.createElement('div');
-            taskButton.textContent = taskName;
-            return taskButton;
+            function addTaskBtn(){
+                const addTaskBtn = document.createElement('button');
+                addTaskBtn.textContent = 'Add Task';
+                addTaskBtn.addEventListener('click',addTaskBtnHandler);
+                function addTaskBtnHandler(){
+                    updateListUi(project.tasks, contentUl, taskElementTemplate, addTaskBtn);
+                }
+                return addTaskBtn;
+            }
+            function taskElementTemplate(taskName){
+                const taskButton = document.createElement('div');
+                taskButton.textContent = taskName;
+                return taskButton;
+            }
+            function updateTaskListUi(){
+                contentUl.textContent = '';
+                
+            }
         }
         return projectBtn;
     }
-
-    function updateProjectsListUi(){
-        const asideUl = document.querySelector('aside>ul');
-        asideUl.textContent = '';
-        projectsList.forEach(project => {
-            asideUl.appendChild(projectBtnTemplate(project.name))
+    function updateListUi(array, ul, objTemplate, ...buttons){
+        ul.textContent = '';
+        array.forEach(obj => {
+            ul.appendChild(objTemplate(obj.name))
         });
-        asideUl.appendChild(addProjectBtn());
+        buttons.forEach(button => {
+            ul.appendChild(button())
+        });
     }
+
     header();
     aside();
     content();

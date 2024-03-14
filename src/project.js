@@ -74,4 +74,5 @@ function getProjectByName(name) {
 	const foundProject = projectsList.find(project => project.name === name);
 	return foundProject;
 }
+
 export { createProject, projectsList, getProjectByName };

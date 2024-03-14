@@ -49,8 +49,8 @@ table {
 	--system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	font-family: var(--system-ui);
 	box-sizing: border-box;
-	--primary-color: #431407;
-	--secondary-color: #fed7aa;
+	--primary-color: hsl(13, 81%, 15%);
+	--secondary-color: hsl(32, 98%, 83%);
 	--tertiary-color: hsl(28, 7%, 55%);
 }
 body {
@@ -78,14 +78,55 @@ header{
     font-family: poppins, sans-serif;
     color: var(--primary-color);
 	grid-column: 1 / span 4;
+	user-select: none;
 }
 /*header*/
-/*main*/
+/*content*/
 #content{
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
 	position: relative;
+	gap: 10px;
 }
-/*main*/
-
+#content h2{
+	font-size: 2rem;
+	font-weight: bold;
+	color: var(--primary-color);
+}
+#content button{
+	border: none;
+	padding: 10px;
+	border-radius: 10px;
+	font-size: 1.1rem;
+}
+#content button:hover{
+	filter: brightness(.9);
+}
+.task{
+	display: flex;
+	justify-content: space-between;
+	text-align: center;
+	align-items: center;
+	font-size: 1.1rem;
+	background-color: rgb(233, 233, 233);
+	border-radius: 10px;
+	padding: 4px 15px;
+}
+.add-task-form input{
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid gray;
+}
+.add-task-form div{
+	display: flex;
+	gap: 10px;
+	flex-direction: row;
+}
+.add-task-form div button{
+	flex: 1;
+}
+/*content*/
 /*aside*/
 aside{
     display: flex;
@@ -120,7 +161,9 @@ aside h2{
 	margin: 20px 0;
 }
 
-.add-project-form{
+.add-project-form,
+.add-task-form{
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -129,13 +172,20 @@ aside h2{
 	display: flex;
 	gap: 10px;
 }
-.add-project-form button{
+.add-project-form button,
+.add-task-form button{
+	background-color: var(--secondary-color);
+	color: var(--primary-color);
 	padding: 5px;
 }
 .add-project-form input{
 	padding: 5px;
 	border: none;
 	border-radius: 4px;
+}
+.add-project-btn{
+	color: var(--primary-color);
+	background-color: var(--secondary-color);
 }
 /*aside*/
 

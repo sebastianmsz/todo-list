@@ -7,8 +7,20 @@ function project(name) {
 		name: name,
 		tasks: [],
 		addTask(name, description, dueDate, priority) {
-			const newTask = task(name, description, dueDate, priority);
-			this.tasks.push(newTask);
+			const existingTask = this.tasks.find(task => task.name === name);
+			if(!name || typeof name !== 'string'){
+				throw new Error('Invalid task name. Please provide a valid name.');
+			}
+			if (existingTask) {
+				throw new Error('A project with the same name already exists.');
+			}
+			try{
+				const newTask = task(name, description, dueDate, priority);
+				this.tasks.push(newTask);
+			} catch (error) {
+				console.error('Error creating task:', error.message);
+				throw error;
+			}
 		},
 		removeTask(taskName) {
 			this.tasks = this.tasks.filter(task => task.name !== taskName);
@@ -53,12 +65,10 @@ function createProject(name) {
 	if (!name || typeof name !== 'string') {
 		throw new Error('Invalid project name. Please provide a valid name.');
 	}
-
 	const existingProject = projectsList.find(project => project.name === name);
 	if (existingProject) {
 		throw new Error('A project with the same name already exists.');
 	}
-
 	try {
 		const newProject = project(name);
 		projectsList.push(newProject);

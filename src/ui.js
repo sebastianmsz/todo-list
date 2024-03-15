@@ -24,30 +24,19 @@ export default function(){
         let homeProjectBtn = document.querySelector('#homeProjectBtn');
         homeProjectBtn.dispatchEvent(new Event('click'));
     }
+
     createHeader();
     createFooter();
     updateProjectsListUi();
     clickHomeButton();
 
-    function createAddProjectBtn(){
-        const addProjectBtn = document.createElement('button');
-        addProjectBtn.textContent = 'Add Project';
-        addProjectBtn.className = 'add-project-btn';
-        addProjectBtn.addEventListener('click', addProjectBtnHandler)
-        
-        function addProjectBtnHandler(){
-            this.replaceWith(createAddProjectForm());
-        }
-
-        return addProjectBtn;
-    }
-
-    function createForm(formType, submitHandler, updater) {
+    function createForm(formType, submitHandler, updater, addBtn) {
+        const formattedType = formType[0].toUpperCase() + formType.slice(1);
         const form = document.createElement('div');
         form.className = 'add-' + formType + '-form';
       
         const input = document.createElement('input');
-        input.placeholder = `${formType[0].toUpperCase() + formType.slice(1)} Name`;
+        input.placeholder = `${formattedType} Name`;
       
         function createButton(buttonText, clickHandler) {
           const button = document.createElement('button');
@@ -55,9 +44,7 @@ export default function(){
           button.addEventListener('click', clickHandler);
           return button;
         }
-      
-        const cancelBtn = createButton('Cancel', () => form.replaceWith(createAddProjectBtn()));
-      
+        const cancelBtn = createButton('Cancel', () => form.replaceWith(addBtn()));
         const confirmBtn = createButton('Confirm', () => {
           submitHandler(input.value);
           updater();
@@ -69,17 +56,34 @@ export default function(){
         form.append(input, buttons);
         return form;
     }
-      
-    function createAddProjectForm() {
-    return createForm('project', createProject, updateProjectsListUi);
-    }
+    function createAddProjectBtn(){
+        const addProjectBtn = document.createElement('button');
 
+        addProjectBtn.textContent = 'Add Project';
+        addProjectBtn.className = 'add-project-btn';
+        addProjectBtn.addEventListener('click', addProjectBtnHandler)
+        function addProjectBtnHandler(){
+            this.replaceWith(createForm('project', createProject, updateProjectsListUi, createAddProjectBtn));
+        }
+        return addProjectBtn;
+    }
     function projectBtnTemplate(name){
         const projectBtn = document.createElement('button');
         const project = getProjectByName(name);
         const content = document.querySelector('#content');
+        projectBtn.className = 'project';
         projectBtn.textContent = project.name;
-        projectBtn.addEventListener('click', updateTasksListUi);
+        projectBtn.addEventListener('click', ()=>{
+            updateTasksListUi()
+            setActiveProjectBtnClass()
+        });
+        function setActiveProjectBtnClass(){
+            const projectsBtn = document.querySelectorAll('.project')
+            projectsBtn.forEach(projectBtn => {
+                projectBtn.className = 'project';
+            });
+            projectBtn.classList.add('active-project-btn');
+        }
         function updateTasksListUi(){
             content.textContent = '';
             const h2 = document.createElement('h2')
@@ -106,10 +110,11 @@ export default function(){
             }
             function createAddTaskBtn(){
                 const addTaskBtn = document.createElement('button');
+                addTaskBtn.className = 'add-task-button';
                 addTaskBtn.textContent = 'Add Task';
                 addTaskBtn.addEventListener('click',addTaskBtnHandler);
                 function addTaskBtnHandler(){
-                    this.replaceWith(createAddTaskForm(project))
+                    this.replaceWith(createForm('task', (taskName) => project.addTask(taskName), updateTasksListUi, createAddTaskBtn))
                 }
                 return addTaskBtn;
             }
@@ -121,7 +126,7 @@ export default function(){
                 taskElement.append(taskNameContainer, createDeleteTaskBtn());
                 function createDeleteTaskBtn(){
                     const deleteBtn = document.createElement('button');
-                    deleteBtn.textContent = 'X';
+                    deleteBtn.textContent = '✕';
                     deleteBtn.addEventListener('click', deleteBtnHandler);
                     function deleteBtnHandler(){
                         project.removeTask(taskName);
@@ -130,9 +135,6 @@ export default function(){
                     return deleteBtn;
                 }
                 return taskElement;
-            }
-            function createAddTaskForm(project) {
-                return createForm('task', (taskName) => project.addTask(taskName), updateTasksListUi);
             }
         }
         return projectBtn;
@@ -149,11 +151,13 @@ export default function(){
         h2.textContent = 'Projects';
         aside.appendChild(h2);
         aside.appendChild(createAddProjectBtn());
-        if (projectsList.length>3){
+        if (projectsList.length > 3) {
+            const elements = [];
             for (let i = 3; i < projectsList.length; i++) {
-                const element = projectBtnTemplate((projectsList[i]).name);
-                aside.appendChild(element)
+              elements.push(projectBtnTemplate(projectsList[i].name));
             }
-        }
+            aside.append(...elements.reverse());
+            elements[0].dispatchEvent(new Event('click'));
+          }
     }
 }

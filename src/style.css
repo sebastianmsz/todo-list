@@ -60,19 +60,20 @@ body {
 	grid-template-rows: 1fr 10fr;
 }
 button{
+	transition : filter 60ms linear;
     cursor: pointer;
 }
 button:hover{
-	filter: brightness(1.2);
+	filter: brightness(.9);
 }
 button:active{
-	filter: brightness(1.4);
+	filter: brightness(.95);
 }
 /*global*/
 
 /*header*/
 header{
-    padding: 10px 40px;
+    padding: 10px 30px;
     font-size: 3rem;
     background-color: var(--secondary-color);
     font-family: poppins, sans-serif;
@@ -83,38 +84,45 @@ header{
 /*header*/
 /*content*/
 #content{
-	padding: 20px;
+	padding: 20px 60px;
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	gap: 10px;
 }
 #content h2{
+	margin-bottom: 10px;
 	font-size: 2rem;
 	font-weight: bold;
 	color: var(--primary-color);
 }
-#content button{
+#content>button,
+.add-task-form button{
+	background-color: var(--tertiary-color);
+	color: hsl(0, 0%, 100%);
 	border: none;
-	padding: 10px;
+	padding: 15px;
 	border-radius: 10px;
 	font-size: 1.1rem;
-}
-#content button:hover{
-	filter: brightness(.9);
 }
 .task{
 	display: flex;
 	justify-content: space-between;
 	text-align: center;
 	align-items: center;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	background-color: rgb(233, 233, 233);
 	border-radius: 10px;
-	padding: 4px 15px;
+	padding: 15px;
+}
+.task button{
+	border-radius: 50%;
+	border: none;
+	background: transparent;
 }
 .add-task-form input{
-	padding: 5px;
+	font-size: 1rem;
+	padding: 15px;
 	border-radius: 4px;
 	border: 1px solid gray;
 }
@@ -126,6 +134,9 @@ header{
 .add-task-form div button{
 	flex: 1;
 }
+.add-task-button{
+	margin-top: 10px;
+}
 /*content*/
 /*aside*/
 aside{
@@ -133,34 +144,30 @@ aside{
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 20px 10px;
+    padding: 20px;
     background-color: var(--tertiary-color);
 }
-aside ul{
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+aside .project{
+	background-color: hsl(30, 9%, 60%);
+	color: white;
+}
+aside .project:hover{
+	filter: brightness(1.1);
 }
 aside button{
-	filter: brightness(1.1);
     border: none;
     padding: 10px;
     font-size: 1rem;
     font-weight: normal;
     width: 100%;
     border-radius: 10px;
-    background-color: var(--tertiary-color);
-	color: white;
 }
-
 aside h2{
     font-size: 1.8rem;
 	font-family: poppins;
 	color: white;
 	margin: 20px 0;
 }
-
 .add-project-form,
 .add-task-form{
 	width: 100%;
@@ -172,8 +179,7 @@ aside h2{
 	display: flex;
 	gap: 10px;
 }
-.add-project-form button,
-.add-task-form button{
+.add-project-form button{
 	background-color: var(--secondary-color);
 	color: var(--primary-color);
 	padding: 5px;
@@ -186,6 +192,11 @@ aside h2{
 .add-project-btn{
 	color: var(--primary-color);
 	background-color: var(--secondary-color);
+}
+.active-project-btn{
+	filter: brightness(1.1);
+	border: solid;
+	color: black;
 }
 /*aside*/
 

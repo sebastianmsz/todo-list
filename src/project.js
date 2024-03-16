@@ -55,9 +55,18 @@ function project(name) {
 				projectsList.splice(index, 1);
 			}
 		},
-		modifyProjectName(newName){
-			this.name = newName;
-		}
+		modifyName(newName) {
+			if (!newName || typeof newName !== 'string') {
+			  throw new Error('Invalid project name. Please provide a valid name.');
+			}
+			if (this.name !== newName) {
+			  this.name = newName;
+			  const projectIndex = projectsList.findIndex(proj => proj === this);
+			  if (projectIndex !== -1) {
+				projectsList[projectIndex].name = newName;
+			  }
+			}
+		  }
 	};
 }
 

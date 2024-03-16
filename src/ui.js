@@ -11,14 +11,13 @@ export default function(){
         const content = document.querySelector('#content');
         const footer = document.querySelector('footer');
         const copyrightParagraph = document.createElement('p');
-        copyrightParagraph.innerHTML = `Copyright &copy;<span id="year">${new Date().getFullYear()}</span> sebastianmsz`;
+        copyrightParagraph.innerHTML = `Copyright &copy;<span id='year'>${new Date().getFullYear()}</span> sebastianmsz`;
         const githubLink = document.createElement('a');
         githubLink.href = 'https://github.com/sebastianmsz';
         githubLink.target = '_blank';
         githubLink.innerHTML = '<i class="fa fa-github" aria-hidden="true"></i>';
         copyrightParagraph.appendChild(githubLink);
         footer.appendChild(copyrightParagraph);
-        content.appendChild(footer);
     }
     function clickHomeButton(){
         let homeProjectBtn = document.querySelector('#homeProjectBtn');
@@ -37,7 +36,12 @@ export default function(){
       
         const input = document.createElement('input');
         input.placeholder = `${formattedType} Name`;
-      
+        input.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                submitHandler(input.value);
+                updater();
+            }
+        })
         function createButton(buttonText, clickHandler) {
           const button = document.createElement('button');
           button.textContent = buttonText;
@@ -90,10 +94,11 @@ export default function(){
             h2.textContent = project.name;
             content.appendChild(h2);
             project.tasks.forEach(task => {
-                content.appendChild(taskElementTemplate(task.name))
+                content.appendChild(taskElementTemplate(task))
             });
             content.append(createAddTaskBtn());
             if (projectsList.indexOf(project)>2){
+                makeNameEditable(h2, project);
                 content.append(createDeleteProjectBtn());
             }
 
@@ -118,10 +123,12 @@ export default function(){
                 }
                 return addTaskBtn;
             }
-            function taskElementTemplate(taskName){
+            function taskElementTemplate(task){
+                const taskName = task.name;
                 const taskElement = document.createElement('div');
                 const taskNameContainer = document.createElement('div')
                 taskNameContainer.textContent = taskName;
+                makeNameEditable(taskNameContainer, task);
                 taskElement.className = 'task';
                 taskElement.append(taskNameContainer, createDeleteTaskBtn());
                 function createDeleteTaskBtn(){
@@ -135,6 +142,29 @@ export default function(){
                     return deleteBtn;
                 }
                 return taskElement;
+            }
+            function makeNameEditable(element, type){
+                element.contentEditable = true;
+                function objectClickHandler(){
+                    if (element.textContent){
+                        type.modifyName(element.textContent);
+                    } else {
+                        element.textContent = type.name;
+                    }
+                    updateProjectsListUi();
+                    updateTasksListUi();
+                }
+    
+                element.addEventListener('blur', () => {
+                    objectClickHandler()
+                });
+                element.addEventListener('keypress', (event) => {
+                    if (event.key === 'Enter') {
+                    event.preventDefault();
+                    objectClickHandler();
+                    }
+                });
+                return element;
             }
         }
         return projectBtn;

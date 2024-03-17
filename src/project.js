@@ -12,6 +12,7 @@ function project(name) {
 				throw new Error('Invalid task name. Please provide a valid name.');
 			}
 			if (existingTask) {
+				alert('A project with the same name already exists.');
 				throw new Error('A project with the same name already exists.');
 			}
 			try{
@@ -52,6 +53,7 @@ function createProject(name) {
 	}
 	const existingProject = projectsList.find(project => project.name === name);
 	if (existingProject) {
+		alert('A project with the same name already exists.');
 		throw new Error('A project with the same name already exists.');
 	}
 	try {

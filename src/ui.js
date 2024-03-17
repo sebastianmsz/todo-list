@@ -3,9 +3,16 @@ import {createProject, projectsList, getProjectByName} from './project';
 export default function(){
     function createHeader(){
         const header = document.querySelector('header');
+        const showAsideBtn = document.createElement('button');
+        showAsideBtn.textContent = '≡';
+        showAsideBtn.addEventListener('click', ()=>{
+            const aside = document.querySelector('aside');
+            aside.classList.toggle('active-aside')
+        })
         const h1 = document.createElement('h1');
         h1.textContent = 'To-Do List';
-        header.append(h1);
+
+        header.append(h1, showAsideBtn);
     }
     function createFooter(){
         const content = document.querySelector('#content');
@@ -89,6 +96,8 @@ export default function(){
             projectBtn.classList.add('active-project-btn');
         }
         function updateTasksListUi(){
+            const aside = document.querySelector('aside');
+            aside.className = '';   
             content.textContent = '';
             const h2 = document.createElement('h2')
             h2.textContent = project.name;
@@ -125,11 +134,11 @@ export default function(){
             }
             function taskElementTemplate(task){
                 const taskElement = document.createElement('div');
+                const inputsContainer = document.createElement('div');
 
-                const taskNameContainer = document.createElement('div');
+                const taskNameContainer = document.createElement('h3');
                 const taskName = task.name;
                 makeNameEditable(taskNameContainer, task);
-                
                 taskNameContainer.append(taskName);
                 
                 const taskDescriptionContainer = document.createElement('div');
@@ -170,7 +179,7 @@ export default function(){
                 
                 const taskDueDateContainer = document.createElement('div');
                 const taskDueDateLabel = document.createElement('label');
-                taskDueDateLabel.textContent = 'Due Date:';
+                taskDueDateLabel.textContent = 'Due-Date:';
                 const taskDueDate = document.createElement('input');
                 taskDueDate.type = 'date';
                 taskDueDate.value = task.dueDate;
@@ -180,7 +189,8 @@ export default function(){
                 taskDueDateContainer.append(taskDueDateLabel, taskDueDate);
                 
                 taskElement.className = 'task';
-                taskElement.append(taskNameContainer, taskDescriptionContainer, taskDueDateContainer, taskPriorityContainer, createDeleteTaskBtn());
+                inputsContainer.append(taskDueDateContainer, taskPriorityContainer)
+                taskElement.append(taskNameContainer, taskDescriptionContainer, inputsContainer, createDeleteTaskBtn());
 
                 function createDeleteTaskBtn(){
                     const deleteBtn = document.createElement('button');
@@ -221,7 +231,8 @@ export default function(){
         return projectBtn;
     }
     function updateProjectsListUi(){
-        const aside = document.querySelector('aside');       
+        const aside = document.querySelector('aside');
+        aside.className = '';   
         aside.textContent = '';
         const homeProjectBtn = projectBtnTemplate('Home');
         homeProjectBtn.id = ('homeProjectBtn');

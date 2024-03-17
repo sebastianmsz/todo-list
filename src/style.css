@@ -47,11 +47,16 @@ table {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 :root {
 	--system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-	font-family: var(--system-ui);
 	box-sizing: border-box;
 	--primary-color: hsl(13, 81%, 15%);
 	--secondary-color: hsl(32, 98%, 83%);
 	--tertiary-color: hsl(28, 7%, 55%);
+}
+:root>*{
+	font-family: var(--system-ui);
+}
+h2,h3,h1{
+	font-family: poppins, var(--system-ui);
 }
 body {
 	height: 100vh;
@@ -71,21 +76,32 @@ button:active{
 }
 [contenteditable]:focus {
 	outline: 0px solid transparent;
-	border: solid;
+	border: solid 0.5px;
 	border-radius: 10px;
-	padding: 10px;
+	padding: 0 2px;
+	display: flex;
+	align-items: center;
 }
 /*global*/
 
 /*header*/
 header{
+	justify-content: space-between;
+	display: flex;
+	align-items: center;
     padding: 10px 30px;
     font-size: 3rem;
     background-color: var(--secondary-color);
-    font-family: poppins, sans-serif;
     color: var(--primary-color);
 	grid-column: 1 / span 4;
 	user-select: none;
+}
+header button{
+	padding: 10px;
+	display: none;
+	border: none;
+	border-radius: 4px;
+	font-size: 1.5rem;
 }
 /*header*/
 /*content*/
@@ -113,30 +129,55 @@ header{
 	font-size: 1.1rem;
 }
 .task{
+	position: relative;
 	display: flex;
-	justify-content: space-between;
+	flex-wrap: wrap;
 	background-color: rgb(233, 233, 233);
 	border-radius: 10px;
-	padding: 15px;
+	padding: 50px 20px 20px;
+	gap: 20px;
+}
+.task h3{
+	top: 12px;
+	position: absolute;
+	min-height: 30px;
+	font-size: 1.5rem;
+	color: var(--primary-color);
 }
 .task button{
-	align-self: self-start;
+	position: absolute;
+	right: 10px;
+	top: 10px;
 	border-radius: 50%;
 	border: none;
 	background: transparent;
 }
-.task [contenteditable]{
-	text-align: start;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	max-width: 300px;
+.task div{
+	flex-direction: column;
+	flex: 1;
+	display: flex;
+	gap: 10px;
 }
-.task div {
+.task div div{
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 10px;
 }
-
+.task input,
+.task textarea,
+.task select{
+	padding: 0 6px;
+	border: none;
+	border-radius: 4px;
+	height: 40px;
+}
+.task textarea{
+	flex: 1;
+	padding-top: 10px;
+	height: 30px;
+	resize:none;
+}
 .add-task-form input{
 	font-size: 1rem;
 	padding: 15px;
@@ -165,6 +206,7 @@ aside{
     padding: 20px;
     background-color: var(--tertiary-color);
 	max-width: 250px;
+	overflow: auto;
 }
 aside .project{
 	background-color: hsl(30, 9%, 60%);
@@ -172,6 +214,7 @@ aside .project{
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-height: 40px;
 }
 aside .project:hover{
 	filter: brightness(1.1);
@@ -246,3 +289,57 @@ footer p{
     transform: rotate(360deg) scale(1.2);
 }
 /*footer*/
+/*mobile*/
+@media (max-width: 550px) {
+	:root{
+		font-size: 15px;
+	}
+	body{
+		grid-template-columns: 1fr;
+		overflow: hidden;
+	}
+	header{
+		font-size: 3rem;
+	}
+	header button{
+		display: inline;
+	}
+	aside{
+		width: 150px;
+		position: absolute;
+		top: 70px;
+		right: -500px;
+		height: 82vh;
+		z-index: 3;
+		transition: right 0.4s ease-in-out;
+
+	}
+	.active-aside{
+		right: 0;
+	}
+	#content{
+		padding: 30px;
+	}
+	.task {
+		flex-direction: column;
+		gap: 10px;
+	}
+	.task div{
+		gap: 6px;
+	}
+	.task>div:first-of-type{
+		flex: auto;
+		height: 150px;	
+	}
+	.task div:last-of-type{
+		flex-direction: row;
+	}
+	.task div:last-of-type div{
+		flex-direction: column;
+	}
+	footer{
+		background-color: white;
+		z-index: 5;
+	}
+}
+/*mobile*/

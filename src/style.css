@@ -115,18 +115,28 @@ header{
 .task{
 	display: flex;
 	justify-content: space-between;
-	text-align: center;
-	align-items: center;
-	font-size: 1rem;
 	background-color: rgb(233, 233, 233);
 	border-radius: 10px;
 	padding: 15px;
 }
 .task button{
+	align-self: self-start;
 	border-radius: 50%;
 	border: none;
 	background: transparent;
 }
+.task [contenteditable]{
+	text-align: start;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 300px;
+}
+.task div {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
 .add-task-form input{
 	font-size: 1rem;
 	padding: 15px;

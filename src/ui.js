@@ -124,13 +124,64 @@ export default function(){
                 return addTaskBtn;
             }
             function taskElementTemplate(task){
-                const taskName = task.name;
                 const taskElement = document.createElement('div');
-                const taskNameContainer = document.createElement('div')
-                taskNameContainer.textContent = taskName;
+
+                const taskNameContainer = document.createElement('div');
+                const taskName = task.name;
                 makeNameEditable(taskNameContainer, task);
+                
+                taskNameContainer.append(taskName);
+                
+                const taskDescriptionContainer = document.createElement('div');
+                const taskDescriptionLabel = document.createElement('label');
+                taskDescriptionLabel.textContent = 'Task Description:';
+                const taskDescription = document.createElement('textarea');
+                taskDescription.placeholder = 'Add Task Description...';
+                taskDescription.addEventListener('change', () => {
+                    task.description = taskDescription.value;
+                });
+                if (task.description){
+                    taskDescription.value = task.description;
+                }
+                taskDescriptionContainer.append(taskDescriptionLabel, taskDescription);
+
+                const taskPriorityContainer = document.createElement('div');
+                const taskPriorityLabel = document.createElement('label');
+                taskPriorityLabel.textContent = 'Priority:';
+                const taskPriority = document.createElement('select');
+                const priorities = ['Low', 'Medium', 'High'];
+                priorities.forEach(priority => {
+                    const option = document.createElement('option');
+                    option.value = priority;
+                    option.text = priority;
+                    taskPriority.appendChild(option);
+                });
+                
+                if (!task.priority) {
+                    taskPriority.value = 'Medium';
+                } else {
+                    taskPriority.value = task.priority;
+                }
+                
+                taskPriority.addEventListener('change', () => {
+                    task.priority = taskPriority.value;
+                });
+                taskPriorityContainer.append(taskPriorityLabel, taskPriority);
+                
+                const taskDueDateContainer = document.createElement('div');
+                const taskDueDateLabel = document.createElement('label');
+                taskDueDateLabel.textContent = 'Due Date:';
+                const taskDueDate = document.createElement('input');
+                taskDueDate.type = 'date';
+                taskDueDate.value = task.dueDate;
+                taskDueDate.addEventListener('change',()=>{
+                    task.dueDate = taskDueDate.value;
+                });
+                taskDueDateContainer.append(taskDueDateLabel, taskDueDate);
+                
                 taskElement.className = 'task';
-                taskElement.append(taskNameContainer, createDeleteTaskBtn());
+                taskElement.append(taskNameContainer, taskDescriptionContainer, taskDueDateContainer, taskPriorityContainer, createDeleteTaskBtn());
+
                 function createDeleteTaskBtn(){
                     const deleteBtn = document.createElement('button');
                     deleteBtn.textContent = '✕';

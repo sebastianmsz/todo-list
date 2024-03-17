@@ -25,30 +25,6 @@ function project(name) {
 		removeTask(taskName) {
 			this.tasks = this.tasks.filter(task => task.name !== taskName);
 		},
-		modifyTaskName(taskName, newName) {
-			const taskToModify = this.tasks.find(task => task.name === taskName);
-			if (taskToModify) {
-				taskToModify.modifyName(newName);
-			}
-		},
-		modifyTaskDescription(taskName, newDescription) {
-			const taskToModify = this.tasks.find(task => task.name === taskName);
-			if (taskToModify) {
-				taskToModify.modifyDescription(newDescription);
-			}
-		},
-		modifyTaskDueDate(taskName, newDueDate) {
-			const taskToModify = this.tasks.find(task => task.name === taskName);
-			if (taskToModify) {
-				taskToModify.modifyDueDate(newDueDate);
-			}
-		},
-		modifyTaskPriority(taskName, newPriority) {
-			const taskToModify = this.tasks.find(task => task.name === taskName);
-			if (taskToModify) {
-				taskToModify.modifyPriority(newPriority);
-			}
-		},
 		deleteProject() {
 			const index = projectsList.findIndex(proj => proj === this);
 			if (index !== -1) {

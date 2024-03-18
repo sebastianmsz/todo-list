@@ -4,7 +4,7 @@ export default function(){
     function createHeader(){
         const header = document.querySelector('header');
         const showAsideBtn = document.createElement('button');
-        showAsideBtn.textContent = '≡';
+        showAsideBtn.innerHTML = '≡';
         showAsideBtn.addEventListener('click', ()=>{
             const aside = document.querySelector('aside');
             aside.classList.toggle('active-aside')

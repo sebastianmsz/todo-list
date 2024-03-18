@@ -13,6 +13,15 @@ if (localStorage.getItem('projectsList')){
 	});
 }
 
+function task(name, description, dueDate, priority) {
+    return {
+        name: name,
+        description: description,
+        dueDate: dueDate,
+        priority: priority,
+        modifyName: modifyName
+    };
+}
 function project(name) {
 	return {
 		name: name,
@@ -22,16 +31,6 @@ function project(name) {
 		deleteProject: deleteProject,
 		modifyName: modifyName
 	};
-}
-
-function task(name, description, dueDate, priority) {
-    return {
-        name: name,
-        description: description,
-        dueDate: dueDate,
-        priority: priority,
-        modifyName: modifyName
-    };
 }
 
 function modifyName(newName) {

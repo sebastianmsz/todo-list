@@ -62,7 +62,7 @@ body {
 	height: 100vh;
 	display: grid;
 	grid-template-columns: 1fr 4fr;
-	grid-template-rows: 1fr 10fr 0.6fr;
+	grid-template-rows: 60px 1fr 50px;
 }
 button{
 	transition : filter 60ms linear;
@@ -267,6 +267,7 @@ footer{
 	color: var(--tertiary-color);
 	width: 100%;
 	grid-row: 3;
+	padding-top: 10px;
 }
 footer a{
 	margin-left: 4px;
@@ -291,7 +292,7 @@ footer p{
 		font-size: 15px;
 	}
 	header{
-		font-size: 3rem;
+		font-size: 2rem;
 		z-index: 5;
 	}
 	header button{
@@ -304,25 +305,33 @@ footer p{
 	body {
 		position: relative;
 		grid-template-columns: 1fr;
+		grid-template-rows: 60px calc(100vh - 50px - 60px) 50px;
 	}
 	aside {
 		position: absolute;
-		height: 82vh;
+		height: calc(100vh - 100px);
 		top: 0;
 		transition: all 0.2s;
 		right: 0;
 		z-index: 4;
- 		transform: translateX(52vw);
+ 		transform: translateX(100vw);
 		width: 40vw;
-		padding-bottom: 40px;
+		overflow-x: hidden;
 	}
 	.active-aside {
 		transform: translateX(0);
 	}
+	.aside h2 {
+		font-size: 1rem;
+	}
 	#content{
 		padding: 30px;
+		overflow: auto;
+		min-width: 0;
 	}
 	.task {
+		padding: 5vw;
+		padding-top: 50px;
 		flex-direction: column;
 		gap: 10px;
 	}
@@ -334,6 +343,7 @@ footer p{
 		height: 150px;	
 	}
 	.task div:last-of-type{
+		flex-wrap: wrap;
 		flex-direction: row;
 	}
 	.task div:last-of-type div{
@@ -341,10 +351,12 @@ footer p{
 	}
 	footer{
 		background-color: hsl(0, 0%, 100%);
-		z-index: 5;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
-}
+	.task div{
+		width: 100%;
+	} 
 /*mobile*/
+}

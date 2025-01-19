@@ -21,7 +21,6 @@ export default function initializeApp() {
     }
 
     function createFooter() {
-        const content = document.querySelector('#content');
         const footer = document.querySelector('footer');
         const copyrightParagraph = document.createElement('p');
         copyrightParagraph.innerHTML = `Copyright &copy;<span id='year'>${new Date().getFullYear()}</span> sebastianmsz`;
@@ -117,6 +116,8 @@ export default function initializeApp() {
                 makeNameEditable(h2, project);
                 content.append(createDeleteProjectBtn());
             }
+            const aside = document.querySelector('aside');
+            aside.className = '';
         }
 
         function createDeleteProjectBtn() {

@@ -53,4 +53,4 @@ The project is organized into the following directories:
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 ## Contact
-If you want to contact me you can reach me at [
+If you want to contact me you can reach me via email at sebastian.msz@proton.me. 
